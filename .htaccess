@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block access to hidden files (e.g. .env, .git) — must come before catch-all
+    RewriteCond %{REQUEST_URI} \/\.
+    RewriteRule ^ - [F]
+
+    # Rewrite all requests to public/ directory
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Block .env files directly (defense in depth with RewriteRule above)
+<FilesMatch "\.env">
+    Require all denied
+</FilesMatch>
